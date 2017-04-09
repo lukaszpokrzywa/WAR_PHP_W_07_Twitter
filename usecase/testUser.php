@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/src/User.php';
-require_once __DIR__ . '/connection.php';
+require_once __DIR__ . '/../src/User.php';
+require_once __DIR__ . '/../connection.php';
 
 $user1 = new User();
 var_dump($user1);
@@ -14,3 +14,4 @@ var_dump($user1);
 
 //Use Case: zapisane nowego użytkownika
 var_dump($user1->saveToDB($conn));
+var_dump($user1->getId());
