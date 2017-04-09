@@ -6,29 +6,36 @@ if(isset($_SESSION['userId'])) {
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $userName = trim($_POST['username']);
     $userEmail = trim($_POST['email']);
     $userPassword = trim($_POST['password']);
+    
     require_once __DIR__ . '/src/User.php';
     require_once __DIR__ . '/connection.php';
     
-    if($userId = User::login($conn, $userEmail, $userPassword)) {
-        $_SESSION['userId'] = $userId; 
-        header('Location: index.php');
-    }
+    $newUser = new User();
+    $newUser->setUsername($userName);
+    $newUser->setEmail($userEmail);
+    $newUser->setPassword($userPassword);
     
+    if($newUser->saveToDB($conn)) {
+        header('Location: login.php');
+    } else {
+        echo 'Nieprawidłowe dane do rejestracji';
+    }
 }
 
 ?>
 
 <form method="POST">
+    username
+    <input type="text" name="username">
+    <br>
     e-mail
     <input type="text" name="email">
     <br>
     password
     <input type="password" name="password">
     <br>
-    <input type="submit">
+    <input type="submit" value="Register">
 </form>
-
-<a href="register.php">rejestracja</a>
-
