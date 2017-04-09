@@ -165,7 +165,11 @@ class User
         $user = self::loadUserByEmail($conn, $email);
         
         if($user) {
-            return password_verify($password, $user->getHashPass());
+            if(password_verify($password, $user->getHashPass())) {
+                return $user->getId();
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
