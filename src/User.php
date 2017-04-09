@@ -143,5 +143,32 @@ class User
         
         return true;
     }
+    
+    static public function loadUserByEmail(PDO $conn, $email) {
+        $stmt = $conn->prepare('SELECT * FROM Users WHERE email=:email');
+        $result = $stmt->execute(['email' => $email]);
+        
+        if ($result === true && $stmt->rowCount() == 1) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            $loadedUser = new User();
+            $loadedUser->id = $row['id'];
+            $loadedUser->setUsername($row['username']);
+            $loadedUser->setHashPass($row['hash_pass']);
+            $loadedUser->setEmail($row['email']);
+            
+            return $loadedUser;
+        }
+    }
+    
+    static public function login(PDO $conn, $email, $password) {
+        $user = self::loadUserByEmail($conn, $email);
+        
+        if($user) {
+            return password_verify($password, $user->getHashPass());
+        } else {
+            return false;
+        }
+    }
 }
 
