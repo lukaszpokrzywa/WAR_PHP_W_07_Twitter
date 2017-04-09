@@ -45,5 +45,24 @@ class User
         $this->hashPass = password_hash($password, PASSWORD_BCRYPT);
         
     }
+    
+    public function saveToDB(PDO $conn) {
+        if($this->id == -1) {
+            $stmt = $conn->prepare('INSERT INTO Users(username, email, hash_pass) '
+                    . 'VALUES (:username, :email, :pass)');
+            
+            $result = $stmt->execute([ 
+                'username' => $this->username, 
+                'email'=> $this->email, 
+                'pass' => $this->hashPass]);
+            
+            if ($result !== false) {
+                $this->id = $conn->lastInsertId();
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
 
