@@ -7,12 +7,23 @@ class User
     private $email;
     private $hashPass;
     
+    /*
+     * store connection in class static attribute 
+     * 
+    static public $conn;
+    
+    static public function setConnection(PDO $conn) {
+        self::$conn = $conn;
+    }
+    */
+    
     public function __construct() {
         $this->id = -1;
         $this->username = '';
         $this->email = '';
         $this->hashPass = '';
     }
+    
     public function getId() {
         return $this->id;
     }

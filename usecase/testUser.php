@@ -3,6 +3,11 @@
 require_once __DIR__ . '/../src/User.php';
 require_once __DIR__ . '/../connection.php';
 
+/*
+ * set static conn attribute 
+User::setConnection($conn);
+ */
+
 $user1 = new User();
 var_dump($user1);
 
